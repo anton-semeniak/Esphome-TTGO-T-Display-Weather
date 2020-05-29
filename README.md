@@ -2,7 +2,7 @@
 ESPHome configuration to use TTGO T-Display for show curent weather from Home Assistant.
 
 ## Demo: 
-![Project Picture](https://github.com/anton-semeniak/Esphome-TTGO-T-Display-Remote/blob/master/documents/images/project_weather.jpg)
+![Project Picture](https://github.com/anton-semeniak/Esphome-TTGO-T-Display-Weather/documents/images/project_weather.jpg)
 
 ## Components: 
 * [TTGO T-Display](https://github.com/Xinyuan-LilyGO/TTGO-T-Display)
