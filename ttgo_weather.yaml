@@ -1,0 +1,253 @@
+esphome:
+  name: esp_ttgo_w
+  platform: ESP32
+  board: nodemcu-32s
+
+wifi:
+  ssid: !secret WiFi_SSID
+  password: !secret WiFi_password
+  manual_ip:
+    static_ip: 172.16.0.81
+    gateway: 172.16.0.1
+    subnet: 255.255.255.0
+
+# Enable logging
+logger:
+
+# Enable OTA updates
+ota:
+  password: !secret OTA_Password
+
+# Enable Home Assistant API
+api:
+  password: !secret API_Password
+
+spi:
+  clk_pin: GPIO18
+  mosi_pin: GPIO19
+i2c:
+  sda: GPIO21
+  scl: GPIO22
+  scan: True
+  
+# (Fonts - folder 'images')
+font:
+  - file: 'fonts/slkscr.ttf'
+    id: font1
+    size: 24
+  - file: 'fonts/BebasNeue-Regular.ttf'
+    id: font2
+    size: 85
+  - file: 'fonts/Arial-Black.ttf'
+    id: font3
+    size: 30
+  - file: 'fonts/BebasNeue-Regular.ttf'
+    id: font4
+    size: 40
+
+#Icons 128x128 (folder 'images')
+image:
+#0-default.png
+  - file: "images/0-default.png"
+    id: wpng_0
+    type: RGB565
+#1-clear-night.png
+  - file: "images/1-clear-night.png"
+    id: wpng_1
+    type: RGB565
+#2-cloudy.png
+  - file: "images/2-cloudy.png"
+    id: wpng_2
+    type: RGB565
+#3-fog.png
+  - file: "images/3-fog.png"
+    id: wpng_3
+    type: RGB565
+#4-hail.png
+  - file: "images/4-hail.png"
+    id: wpng_4
+    type: RGB565
+#5-lightning.png
+  - file: "images/5-lightning.png"
+    id: wpng_5
+    type: RGB565
+#6-lightning-rainy.png
+  - file: "images/6-lightning-rainy.png"
+    id: wpng_6
+    type: RGB565
+#7-partlycloudy.png
+  - file: "images/7-partlycloudy.png"
+    id: wpng_7
+    type: RGB565
+#8-pouring.png
+  - file: "images/8-pouring.png"
+    id: wpng_8
+    type: RGB565
+#9-rainy.png
+  - file: "images/9-rainy.png"
+    id: wpng_9
+    type: RGB565
+#10-snowy.png
+  - file: "images/10-snowy.png"
+    id: wpng_10
+    type: RGB565
+#11-snowy-rainy.png
+  - file: "images/11-snowy-rainy.png"
+    id: wpng_11
+    type: RGB565
+#12-sunny.png
+  - file: "images/12-sunny.png"
+    id: wpng_12
+    type: RGB565
+#13-windy.png
+  - file: "images/13-windy.png"
+    id: wpng_13
+    type: RGB565
+#14-windy-variant.png
+  - file: "images/14-windy-variant.png"
+    id: wpng_14
+    type: RGB565
+#15-exceptional.png
+  - file: "images/15-exceptional.png"
+    id: wpng_15
+    type: RGB565
+  
+display:
+  - platform: st7789v
+    id: st7789vdisplay
+    reset_pin: GPIO23
+    dc_pin: GPIO16
+    cs_pin: GPIO5
+    bl_pin: GPIO4
+    brightness: 25%
+    update_interval: 5s
+    lambda: |-
+      it.set_rotation(DISPLAY_ROTATION_0_DEGREES);
+      //Icon
+      if (id(curent_weather).state == "clear-night")
+      {
+         it.image(5, 5, id(wpng_1));
+      }
+      else if (id(curent_weather).state == "cloudy")
+      {
+         it.image(5, 5, id(wpng_2));
+      }
+      else if (id(curent_weather).state == "fog")
+      {
+         it.image(5, 5, id(wpng_3));
+      }
+      else if (id(curent_weather).state == "hail")
+      {
+         it.image(5, 5, id(wpng_4));
+      }
+      else if (id(curent_weather).state == "lightning")
+      {
+         it.image(5, 5, id(wpng_5));
+      }
+      else if (id(curent_weather).state == "lightning-rainy")
+      {
+         it.image(5, 5, id(wpng_6));
+      }
+      else if (id(curent_weather).state == "partlycloudy")
+      {
+         it.image(5, 5, id(wpng_7));
+      }
+      else if (id(curent_weather).state == "pouring")
+      {
+         it.image(5, 5, id(wpng_8));
+      }
+      else if (id(curent_weather).state == "rainy")
+      {
+         it.image(5, 5, id(wpng_9));
+      }
+      else if (id(curent_weather).state == "snowy")
+      {
+         it.image(5, 5, id(wpng_10));
+      }
+      else if (id(curent_weather).state == "snowy-rainy'")
+      {
+         it.image(5, 5, id(wpng_11));
+      }
+      else if (id(curent_weather).state == "sunny")
+      {
+         it.image(5, 5, id(wpng_12));
+      }
+      else if (id(curent_weather).state == "windy")
+      {
+         it.image(5, 5, id(wpng_13));
+      }
+      else if (id(curent_weather).state == "windy-variant")
+      {
+         it.image(5, 5, id(wpng_14));
+      }
+      else if (id(curent_weather).state == "exceptional")
+      {
+         it.image(5, 5, id(wpng_15));
+      }
+      else
+      {
+         it.image(5, 5, id(wpng_0));
+      }
+      //Temperature
+      if (id(curent_temp).has_state()) 
+      {
+        it.printf(95, 204, id(font2),  0xFFFF, TextAlign::BASELINE_RIGHT, "%.0f", id(curent_temp).state);
+      }
+        it.printf(100, 124, id(font3),  0xFFFF, "o");
+        it.printf(105, 174, id(font4),  0xFFFF, "F");
+      //  it.printf(105, 174, id(font4),  0xFFFF, "C");
+      //Time
+        it.strftime(67, 235, id(font1), 0x767E, TextAlign::BASELINE_CENTER, "%H:%M", id(esptime).now());
+
+sensor:
+  - platform: homeassistant
+    id: curent_temp
+    entity_id: sensor.curent_temp
+    internal: true
+
+text_sensor:
+  - platform: homeassistant
+    id: curent_weather
+    entity_id: sensor.curent_weather
+    internal: true
+
+switch:
+  - platform: template
+    name: "Screen Backlight"
+    lambda: |-
+      if (id(st7789vdisplay).get_backlight()) {
+        return true;
+      } else {
+        return false;
+      }
+    turn_on_action:
+        lambda: |-
+          id(st7789vdisplay).backlight (true);
+    turn_off_action:
+        lambda: |-
+          id(st7789vdisplay).backlight (false);
+
+binary_sensor:
+  - platform: gpio
+    pin: 
+      number: 0
+      inverted: True
+      mode: INPUT_PULLUP
+    name: left_button
+    on_click:
+      then: 
+        lambda: |-
+          id(st7789vdisplay).backlight (false);
+  - platform: gpio
+    pin: 
+      number: 35
+      inverted: True
+      mode: INPUT_PULLUP
+    name: right_button
+    on_click:
+      then: 
+        lambda: |-
+          id(st7789vdisplay).backlight (true);
+time:
+  - platform: homeassistant
+    id: esptime
