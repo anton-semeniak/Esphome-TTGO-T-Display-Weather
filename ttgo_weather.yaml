@@ -1,26 +1,30 @@
 esphome:
-  name: esp_ttgo_w
+  name: ttgo_tdisplay_weather
   platform: ESP32
   board: nodemcu-32s
 
 wifi:
   ssid: !secret WiFi_SSID
   password: !secret WiFi_password
-  manual_ip:
-    static_ip: 172.16.0.81
-    gateway: 172.16.0.1
-    subnet: 255.255.255.0
+  # manual_ip:
+  #   static_ip: 172.16.0.81
+  #   gateway: 172.16.0.1
+  #   subnet: 255.255.255.0
+
+# Enable Web server.
+web_server:
+  port: 80
 
 # Enable logging
 logger:
 
 # Enable OTA updates
 ota:
-  password: !secret OTA_Password
+  # password: !secret OTA_Password
 
 # Enable Home Assistant API
 api:
-  password: !secret API_Password
+  # password: !secret API_Password
 
 spi:
   clk_pin: GPIO18
@@ -118,7 +122,7 @@ display:
     reset_pin: GPIO23
     dc_pin: GPIO16
     cs_pin: GPIO5
-    bl_pin: GPIO4
+    backlight_pin: GPIO4
     brightness: 25%
     update_interval: 5s
     lambda: |-
@@ -212,42 +216,46 @@ text_sensor:
     internal: true
 
 switch:
-  - platform: template
-    name: "Screen Backlight"
-    lambda: |-
-      if (id(st7789vdisplay).get_backlight()) {
-        return true;
-      } else {
-        return false;
-      }
-    turn_on_action:
-        lambda: |-
-          id(st7789vdisplay).backlight (true);
-    turn_off_action:
-        lambda: |-
-          id(st7789vdisplay).backlight (false);
+  - platform: gpio
+    pin: GPIO4
+    name: "Backlight"
+    id: backlight
+  # - platform: template
+  #   name: "Screen Backlight"
+  #   lambda: |-
+  #     if (id(st7789vdisplay).get_backlight()) {
+  #       return true;
+  #     } else {
+  #       return false;
+  #     }
+  #   turn_on_action:
+  #       lambda: |-
+  #         id(st7789vdisplay).backlight (true);
+  #   turn_off_action:
+  #       lambda: |-
+  #         id(st7789vdisplay).backlight (false);
 
 binary_sensor:
-  - platform: gpio
-    pin: 
-      number: 0
-      inverted: True
-      mode: INPUT_PULLUP
-    name: left_button
-    on_click:
-      then: 
-        lambda: |-
-          id(st7789vdisplay).backlight (false);
-  - platform: gpio
-    pin: 
-      number: 35
-      inverted: True
-      mode: INPUT_PULLUP
-    name: right_button
-    on_click:
-      then: 
-        lambda: |-
-          id(st7789vdisplay).backlight (true);
+  # - platform: gpio
+  #   pin: 
+  #     number: 0
+  #     inverted: True
+  #     mode: INPUT_PULLUP
+  #   name: left_button
+  #   on_click:
+  #     then: 
+  #       lambda: |-
+  #         id(st7789vdisplay).backlight (false);
+  # - platform: gpio
+  #   pin: 
+  #     number: 35
+  #     inverted: True
+  #     mode: INPUT_PULLUP
+  #   name: right_button
+  #   on_click:
+  #     then: 
+  #       lambda: |-
+  #         id(st7789vdisplay).backlight (true);
 time:
   - platform: homeassistant
     id: esptime
