@@ -41,80 +41,84 @@ font:
     size: 24
   - file: 'fonts/BebasNeue-Regular.ttf'
     id: font2
-    size: 85
+    size: 65
   - file: 'fonts/Arial-Black.ttf'
     id: font3
     size: 30
   - file: 'fonts/BebasNeue-Regular.ttf'
     id: font4
     size: 40
+  - file: 'fonts/Arial-Black.ttf'
+    id: font5
+    size: 22
 
 #Icons 128x128 (folder 'images')
+# TODO: change all type to RGB565 when-RGB565-supported
 image:
 #0-default.png
   - file: "images/0-default.png"
     id: wpng_0
-    type: RGB565
+    type: RGB24
 #1-clear-night.png
   - file: "images/1-clear-night.png"
     id: wpng_1
-    type: RGB565
+    type: RGB24
 #2-cloudy.png
   - file: "images/2-cloudy.png"
     id: wpng_2
-    type: RGB565
+    type: RGB24
 #3-fog.png
   - file: "images/3-fog.png"
     id: wpng_3
-    type: RGB565
+    type: RGB24
 #4-hail.png
   - file: "images/4-hail.png"
     id: wpng_4
-    type: RGB565
+    type: RGB24
 #5-lightning.png
   - file: "images/5-lightning.png"
     id: wpng_5
-    type: RGB565
+    type: RGB24
 #6-lightning-rainy.png
   - file: "images/6-lightning-rainy.png"
     id: wpng_6
-    type: RGB565
+    type: RGB24
 #7-partlycloudy.png
   - file: "images/7-partlycloudy.png"
     id: wpng_7
-    type: RGB565
-#8-pouring.png
-  - file: "images/8-pouring.png"
-    id: wpng_8
-    type: RGB565
+    type: RGB24
+# #8-pouring.png // TODO: renable-when-RGB565-supported
+#   - file: "images/8-pouring.png"
+#     id: wpng_8
+#     type: RGB24
 #9-rainy.png
   - file: "images/9-rainy.png"
     id: wpng_9
-    type: RGB565
+    type: RGB24
 #10-snowy.png
   - file: "images/10-snowy.png"
     id: wpng_10
-    type: RGB565
-#11-snowy-rainy.png
-  - file: "images/11-snowy-rainy.png"
-    id: wpng_11
-    type: RGB565
+    type: RGB24
+# #11-snowy-rainy.png // TODO: renable-when-RGB565-supported
+#   - file: "images/11-snowy-rainy.png"
+#     id: wpng_11
+#     type: RGB24
 #12-sunny.png
   - file: "images/12-sunny.png"
     id: wpng_12
-    type: RGB565
+    type: RGB24
 #13-windy.png
   - file: "images/13-windy.png"
     id: wpng_13
-    type: RGB565
-#14-windy-variant.png
-  - file: "images/14-windy-variant.png"
-    id: wpng_14
-    type: RGB565
-#15-exceptional.png
-  - file: "images/15-exceptional.png"
-    id: wpng_15
-    type: RGB565
+    type: RGB24
+# #14-windy-variant.png // TODO: renable-when-RGB565-supported
+#   - file: "images/14-windy-variant.png"
+#     id: wpng_14
+#     type: RGB24
+# #15-exceptional.png // TODO: renable-when-RGB565-supported
+#   - file: "images/15-exceptional.png"
+#     id: wpng_15
+#     type: RGB24
   
 display:
   - platform: st7789v
@@ -124,95 +128,124 @@ display:
     cs_pin: GPIO5
     backlight_pin: GPIO4
     brightness: 25%
-    update_interval: 5s
+    update_interval: 1s
     lambda: |-
       it.set_rotation(DISPLAY_ROTATION_0_DEGREES);
       //Icon
-      if (id(curent_weather).state == "clear-night")
+      if (id(weather_condition).state == "clear-night")
       {
          it.image(5, 5, id(wpng_1));
       }
-      else if (id(curent_weather).state == "cloudy")
+      else if (id(weather_condition).state == "cloudy")
       {
          it.image(5, 5, id(wpng_2));
       }
-      else if (id(curent_weather).state == "fog")
+      else if (id(weather_condition).state == "fog")
       {
          it.image(5, 5, id(wpng_3));
       }
-      else if (id(curent_weather).state == "hail")
+      else if (id(weather_condition).state == "hail")
       {
          it.image(5, 5, id(wpng_4));
       }
-      else if (id(curent_weather).state == "lightning")
+      else if (id(weather_condition).state == "lightning")
       {
          it.image(5, 5, id(wpng_5));
       }
-      else if (id(curent_weather).state == "lightning-rainy")
+      else if (id(weather_condition).state == "lightning-rainy")
       {
          it.image(5, 5, id(wpng_6));
       }
-      else if (id(curent_weather).state == "partlycloudy")
+      else if (id(weather_condition).state == "partlycloudy")
       {
          it.image(5, 5, id(wpng_7));
       }
-      else if (id(curent_weather).state == "pouring")
+      else if (id(weather_condition).state == "pouring")
       {
-         it.image(5, 5, id(wpng_8));
+         //  it.image(5, 5, id(wpng_8)); // TODO: renable-when-RGB565-supported
+         it.image(5, 5, id(wpng_9)); // TODO: remove-when-RGB565-supported
       }
-      else if (id(curent_weather).state == "rainy")
+      else if (id(weather_condition).state == "rainy")
       {
          it.image(5, 5, id(wpng_9));
       }
-      else if (id(curent_weather).state == "snowy")
+      else if (id(weather_condition).state == "snowy")
       {
          it.image(5, 5, id(wpng_10));
       }
-      else if (id(curent_weather).state == "snowy-rainy'")
+      else if (id(weather_condition).state == "snowy-rainy'")
       {
-         it.image(5, 5, id(wpng_11));
+         // it.image(5, 5, id(wpng_11)); // TODO: renable-when-RGB565-supported
+         it.image(5, 5, id(wpng_12)); // TODO: remove-when-RGB565-supported
       }
-      else if (id(curent_weather).state == "sunny")
+      else if (id(weather_condition).state == "sunny")
       {
          it.image(5, 5, id(wpng_12));
       }
-      else if (id(curent_weather).state == "windy")
+      else if (id(weather_condition).state == "windy")
       {
          it.image(5, 5, id(wpng_13));
       }
-      else if (id(curent_weather).state == "windy-variant")
+      else if (id(weather_condition).state == "windy-variant")
       {
-         it.image(5, 5, id(wpng_14));
-      }
-      else if (id(curent_weather).state == "exceptional")
+        //  it.image(5, 5, id(wpng_14)); // TODO: renable-when-RGB565-supported
+        it.image(5, 5, id(wpng_13)); // TODO: remove-when-RGB565-supported
+      } 
+      else if (id(weather_condition).state == "exceptional")
       {
-         it.image(5, 5, id(wpng_15));
+        //  it.image(5, 5, id(wpng_15)); // TODO: renable-when-RGB565-supported
+        it.printf(67, 5, id(font2),  0xF800, TextAlign::BASELINE_CENTER, "%s", id(weather_condition).state.c_str()); // TODO: remove-when-RGB565-supported
       }
       else
       {
          it.image(5, 5, id(wpng_0));
       }
       //Temperature
-      if (id(curent_temp).has_state()) 
+      if (id(weather_temperature).has_state()) 
       {
-        it.printf(95, 204, id(font2),  0xFFFF, TextAlign::BASELINE_RIGHT, "%.0f", id(curent_temp).state);
+        it.printf(95, 180, id(font2),  0xFFFF, TextAlign::BASELINE_RIGHT, "%.0f", id(weather_temperature).state);
+        it.print(100, 124, id(font3), 0xFFFF, id(unit_of_measurement).state.c_str());
       }
-        it.printf(100, 124, id(font3),  0xFFFF, "o");
-        it.printf(105, 174, id(font4),  0xFFFF, "F");
+      //  it.printf(100, 124, id(font3),  0xFFFF, "o");
+      //  it.printf(105, 174, id(font4),  0xFFFF, "F");
       //  it.printf(105, 174, id(font4),  0xFFFF, "C");
+      // Syntax is always: it.print(<x>, <y>, <font>, [color=COLOR_ON], [align=TextAlign::TOP_LEFT], <text>);
+      // it.printf(100, 124, id(font3), 0xFFFF, TextAlign::TOP_LEFT, "%s", id(unit_of_measurement).state.c_str());
+      
+      if (id(weather_location).has_state()) 
+      {
+        it.printf(67, 210, id(font5),  0xFFFF, TextAlign::BASELINE_CENTER, "%s", id(weather_location).state.c_str());
+      }
       //Time
-        it.strftime(67, 235, id(font1), 0x767E, TextAlign::BASELINE_CENTER, "%H:%M", id(esptime).now());
+        it.strftime(67, 235, id(font1), 0x767E, TextAlign::BASELINE_CENTER, "%H:%M:%S", id(esptime).now());
+
+# We must create template variables within HA's sensors.yaml for:
+# - sensor.esphome_current_weather_condition
+# - sensor.esphome_current_weather_location
+# - sensor.esphome_current_weather_temperature
+# ESPHome doesn't support attributes so a template var for this is also needed
+# - sensor.esphome_current_weather_temperature_units
 
 sensor:
   - platform: homeassistant
-    id: curent_temp
-    entity_id: sensor.curent_temp
+    id: weather_temperature
+    entity_id: sensor.esphome_current_weather_temperature
     internal: true
 
 text_sensor:
   - platform: homeassistant
-    id: curent_weather
-    entity_id: sensor.curent_weather
+    id: weather_location
+    entity_id: sensor.esphome_current_weather_location
+    internal: true
+
+  - platform: homeassistant
+    id: weather_condition
+    entity_id: sensor.esphome_current_weather_condition
+    internal: true
+
+  - platform: homeassistant
+    id: unit_of_measurement
+    entity_id: sensor.esphome_current_weather_temperature_units
     internal: true
 
 switch:
@@ -235,7 +268,7 @@ switch:
   #       lambda: |-
   #         id(st7789vdisplay).backlight (false);
 
-binary_sensor:
+# binary_sensor:
   # - platform: gpio
   #   pin: 
   #     number: 0
